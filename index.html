@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ChatBot Landing</title>
+  <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>
+  <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #FFF5EC;
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .left-panel {
+      width: 20%;
+      background-color: #FFF5EC;
+      padding: 25px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #333;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .logo-circle {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+
+    .logo-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .logo-text {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .new-chat-input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      outline: none;
+      margin-bottom: 20px;
+    }
+
+    .history {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .history div {
+      padding: 10px 14px;
+      background-color: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      font-size: 14px;
+      transition: transform 0.2s ease;
+      cursor: pointer;
+    }
+
+    .history div:hover {
+      transform: scale(1.02);
+    }
+
+    .profile-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .profile-section img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 2px solid #00bcd4;
+    }
+
+    .signout-btn {
+      background-color: #00bcd4;
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      text-shadow: 0 0 5px rgba(255,255,255,0.7), 0 0 10px rgba(255,255,255,0.5);
+      transition: all 0.3s ease;
+    }
+
+    .signout-btn:hover {
+      background-color: #0097a7;
+      box-shadow: 0 0 10px #00bcd4, 0 0 20px #00bcd4;
+      transform: scale(1.05);
+    }
+
+    .right-area {
+      width: 80%;
+      padding: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .chat-box {
+      width: 100%;
+      height: 100%;
+      background: white;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      padding: 25px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-right: 5px;
+    }
+
+    .input-area {
+      display: flex;
+      gap: 10px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      outline: none;
+    }
+
+    button.send-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background-color: #00bcd4;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    button.send-btn:hover {
+      background-color: #0097a7;
+    }
+
+    .preload {
+      position: absolute;
+      top: 35%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 1;
+    }
+
+    .pre-animation {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .pre-buttons-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .pre-buttons {
+      display: flex;
+      flex-direction: row;
+      gap: 25px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .pre-buttons button {
+      padding: 14px 28px;
+      background: linear-gradient(to right, #ffffff, #fdf7f3);
+      border: 1px solid #ddd;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      color: #444;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      transition: all 0.2s ease-in-out;
+      min-width: 160px;
+    }
+
+    .pre-buttons button:hover {
+      background: #f8f8f8;
+      transform: scale(1.1);
+    }
+
+    .popup-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      width: 340px;
+      padding: 2rem 1.5rem;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      opacity: 0;
+      transition: all 0.6s ease;
+      z-index: 10;
+    }
+
+    .popup-container.show {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+
+    .popup-container h2 {
+      font-size: 1.5rem;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .popup-container p {
+      color: #444;
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+
+    .popup-container button {
+      background: #00bcd4;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 25px;
+      font-size: 18px;
+      cursor: pointer;
+      font-weight: 600;
+      text-shadow: 0 0 5px rgba(255,255,255,0.7), 0 0 10px rgba(255,255,255,0.5);
+      transition: all 0.3s ease;
+    }
+
+    .popup-container button:hover {
+      background: #0097a7;
+      transform: scale(1.08);
+      box-shadow: 0 0 10px #00bcd4, 0 0 20px #00bcd4;
+    }
+
+    .lottie-wrapper {
+      margin-top: -80px;
+      margin-bottom: -10px;
+    }
+
+    @media (max-width: 768px) {
+      .left-panel {
+        display: none;
+      }
+
+      .right-area {
+        width: 100%;
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="left-panel">
+    <div>
+      <div class="logo-section">
+        <div class="logo-circle">
+          <a href="https://imgbb.com/" target="_blank">
+            <img src="https://i.ibb.co/Hfsb3B9M/Screenshot-2025-07-12-174538.png" alt="ChatBot Logo" />
+          </a>
+          
+        </div>
+        <div class="logo-text">INDU AI</div>
+      </div>
+      <input type="text" class="new-chat-input" placeholder="Start new chat..." />
+      <div class="history">
+        <div>Chat 1</div>
+        <div>Chat 2</div>
+        <div>Chat 3</div>
+      </div>
+    </div>
+    <div class="profile-section">
+      <img src="https://i.ibb.co/Hfsb3B9M/Screenshot-2025-07-12-174538.png" alt="Cartoon Profile" width="70" height="70"/>
+      <button class="signout-btn" onclick="window.location='login.html'">Sign In</button>
+    </div>
+  </div>
+
+  <!-- Main Chat -->
+  <div class="right-area">
+    <div class="chat-box">
+      <!-- Center animation before chat -->
+      <div class="preload" id="preload">
+        <div class="pre-animation">
+          <dotlottie-wc 
+            src="https://lottie.host/0262e0e6-f676-4fae-8123-a12e8b1f39b6/OpEXw9QXrw.lottie"
+            style="width: 250px; height: 250px;" speed="1" autoplay loop>
+          </dotlottie-wc>
+        </div>
+        <div class="pre-buttons-container">
+          <div class="pre-buttons">
+            <button onclick="triggerPopup()">😂 INDUCODES</button>
+            <button onclick="triggerPopup()">🤯 Fun Fact</button>
+            <button onclick="triggerPopup()">💻 Python Code</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message area -->
+      <div class="messages" id="messages"></div>
+
+      <!-- Input -->
+      <div class="input-area">
+        <input type="text" id="userInput" placeholder="Type a message..." oninput="triggerPopup()" />
+        <button class="send-btn" onclick="triggerPopup()">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sign In Popup -->
+  <div class="popup-container" id="popupBox">
+    <div class="lottie-wrapper">
+      <dotlottie-player
+        src="https://lottie.host/81d87699-091a-4495-bdf3-c559d64a20bc/VjbHU7mAiD.lottie"
+        background="transparent" speed="1"
+        style="width: 240px; height: 240px; margin: 0 auto;" loop autoplay>
+      </dotlottie-player>
+    </div>
+    <h2>Please Sign In</h2>
+    <p>To start chatting, please sign in to your account first.</p>
+    <button onclick="window.location.href='login.html'">Sign In</button>
+  </div>
+
+  <script>
+    function triggerPopup() {
+      document.getElementById('popupBox').classList.add('show');
+    }
+  </script>
+
+</body>
+</html>

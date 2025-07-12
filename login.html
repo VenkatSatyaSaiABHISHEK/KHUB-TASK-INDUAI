@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #FFF5EC;
+      height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    h2 {
+      color: #222;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      font-weight: 600;
+    }
+
+    .bubble-input {
+      margin-bottom: 20px;
+      width: 300px;
+    }
+
+    .bubble-input input {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 50px;
+      background-color: rgba(255, 255, 255, 0.7);
+      font-size: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      outline: none;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .bubble-input input:focus {
+      box-shadow: 0 4px 16px rgba(0, 188, 212, 0.3);
+    }
+
+    button {
+      width: 300px;
+      padding: 12px;
+      background-color: white;
+      color: #00bcd4;
+      font-weight: bold;
+      border: 2px solid #00bcd4;
+      border-radius: 50px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #00bcd4;
+      color: white;
+    }
+
+    .or-divider {
+      display: flex;
+      align-items: center;
+      margin: 20px 0;
+      width: 300px;
+    }
+
+    .or-divider::before,
+    .or-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #ccc;
+    }
+
+    .or-divider span {
+      margin: 0 10px;
+      color: #999;
+      font-size: 0.9rem;
+    }
+
+    .google-btn {
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border-radius: 50px;
+      padding: 10px;
+      width: 300px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .google-btn:hover {
+      background-color: #f1f1f1;
+    }
+
+    .google-icon {
+      height: 20px;
+    }
+
+    .signup-link {
+      margin-top: 20px;
+      display: block;
+      color: #00bcd4;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    /* 👇 Small Lottie at bottom center touching edge */
+    .lottie-animation {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 100px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @media (max-width: 480px) {
+      .bubble-input, button, .google-btn, .or-divider {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Login</h2>
+
+    <div class="bubble-input">
+      <input type="email" id="email" placeholder="Email">
+    </div>
+
+    <div class="bubble-input">
+      <input type="password" id="password" placeholder="Password">
+    </div>
+
+    <button onclick="login()">Sign In</button>
+
+    <div class="or-divider">
+      <span>OR</span>
+    </div>
+
+    <div class="google-btn" onclick="googleLogin()">
+      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="google-icon" alt="Google logo">
+      Sign in with Google
+    </div>
+
+    <a href="signup.html" class="signup-link">Don't have an account? Sign up</a>
+  </div>
+
+  <!-- 🧸 Tiny centered Lottie at bottom -->
+  <dotlottie-wc class="lottie-animation" src="https://lottie.host/e5de6dad-f85d-4393-baf0-fe5857b41407/azMvBRWnEm.lottie" speed="1" autoplay loop></dotlottie-wc>
+
+  <!-- Firebase Auth Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBdrRvxt8P10sT0ZteaziN5TCT-FuiNnKE",
+      authDomain: "khub-bdabd.firebaseapp.com",
+      projectId: "khub-bdabd",
+      storageBucket: "khub-bdabd.appspot.com",
+      messagingSenderId: "401713212611",
+      appId: "1:401713212611:web:d569d4a07fac761fb24676",
+      measurementId: "G-LTK6TY8YX1"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    window.login = function () {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          alert("✅ Login Successful!");
+          window.location.href = "chat.html";
+        })
+        .catch((error) => {
+          alert("❌ Login Error: " + error.message);
+        });
+    };
+
+    window.googleLogin = function () {
+      signInWithPopup(auth, provider)
+        .then(() => {
+          alert("✅ Google Login Successful!");
+          window.location.href = "chat.html";
+        })
+        .catch((error) => {
+          alert("❌ Google Sign-In Error: " + error.message);
+        });
+    };
+  </script>
+</body>
+</html>

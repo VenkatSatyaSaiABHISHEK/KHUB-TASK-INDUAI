@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up | Chatbot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #FFF5EC;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Poppins', sans-serif;
+      flex-direction: column;
+    }
+
+    h2 {
+      color: #222;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      font-weight: 600;
+    }
+
+    .bubble-input {
+      margin-bottom: 20px;
+      width: 300px;
+    }
+
+    .bubble-input input {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 50px;
+      background-color: rgba(255, 255, 255, 0.7);
+      font-size: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      outline: none;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .bubble-input input:focus {
+      box-shadow: 0 4px 16px rgba(0, 188, 212, 0.3);
+    }
+
+    button {
+      width: 300px;
+      padding: 12px;
+      background-color: white;
+      color: #00bcd4;
+      font-weight: bold;
+      border: 2px solid #00bcd4;
+      border-radius: 50px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #00bcd4;
+      color: white;
+    }
+
+    .google-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 1px solid #ccc;
+      border-radius: 50px;
+      background-color: #ffffff;
+      transition: background-color 0.3s ease;
+    }
+
+    .google-btn:hover {
+      background-color: #f1f1f1;
+    }
+
+    .google-icon {
+      height: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Create Account</h2>
+
+  <div class="bubble-input">
+    <input type="text" id="username" placeholder="Username" />
+  </div>
+
+  <div class="bubble-input">
+    <input type="email" id="email" placeholder="Email" />
+  </div>
+
+  <div class="bubble-input">
+    <input type="password" id="password" placeholder="Password" />
+  </div>
+
+  <button onclick="signUp()">Sign Up</button>
+
+  <button class="google-btn" onclick="signUpWithGoogle()">
+    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="google-icon" alt="Google logo">
+    Sign Up with Google
+  </button>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+    // ✅ Correct Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyBdrRvxt8P10sT0ZteaziN5TCT-FuiNnKE",
+      authDomain: "khub-bdabd.firebaseapp.com",
+      projectId: "khub-bdabd",
+      storageBucket: "khub-bdabd.appspot.com",
+      messagingSenderId: "401713212611",
+      appId: "1:401713212611:web:d569d4a07fac761fb24676",
+      measurementId: "G-LTK6TY8YX1"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    // Email/Password Signup
+    window.signUp = function () {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          alert("✅ Signup successful!");
+          window.location.href = "chat.html";
+        })
+        .catch((error) => {
+          alert("❌ Error: " + error.message);
+        });
+    };
+
+    // Google Signup
+    window.signUpWithGoogle = function () {
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          alert("✅ Google Signup successful!");
+          window.location.href = "chat.html";
+        })
+        .catch((error) => {
+          alert("❌ Google Signup Error: " + error.message);
+        });
+    };
+  </script>
+
+</body>
+</html>
