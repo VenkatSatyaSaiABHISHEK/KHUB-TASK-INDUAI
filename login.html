@@ -138,12 +138,57 @@
       pointer-events: none;
       z-index: 0;
     }
+@media (max-width: 480px) {
+  body {
+    padding: 20px;
+    align-items: flex-start;
+  }
 
-    @media (max-width: 480px) {
-      .bubble-input, button, .google-btn, .or-divider {
-        width: 90%;
-      }
-    }
+  .container {
+    width: 100%;
+    margin-top: 40px;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .bubble-input,
+  button,
+  .google-btn,
+  .or-divider {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .bubble-input input {
+    font-size: 0.95rem;
+    padding: 12px;
+  }
+
+  button {
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+
+  .google-btn {
+    font-size: 0.9rem;
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .signup-link {
+    font-size: 0.85rem;
+  }
+
+  .lottie-animation {
+    width: 80px;
+    height: 80px;
+    bottom: -10px;
+  }
+}
+
   </style>
 </head>
 <body>
