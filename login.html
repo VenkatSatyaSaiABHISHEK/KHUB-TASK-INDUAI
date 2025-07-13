@@ -140,15 +140,16 @@
       pointer-events: none;
       z-index: 0;
     }
-@media (max-width: 480px) {
+   @media (max-width: 480px) {
   body {
-    padding: 20px;
+    padding: 0 20px;
+    justify-content: flex-start;
     align-items: flex-start;
   }
 
   .container {
     width: 100%;
-    margin-top: 40px;
+    margin-top: 80px; /* pushes login down */
   }
 
   h2 {
@@ -185,9 +186,9 @@
   }
 
   .lottie-animation {
-    width: 80px;
-    height: 80px;
-    bottom: -10px;
+    width: 350px;
+    height: 350px;
+    bottom: 50px;
   }
 }
 
