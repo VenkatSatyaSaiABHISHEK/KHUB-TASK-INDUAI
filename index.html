@@ -281,7 +281,7 @@
       margin-top: -80px;
       margin-bottom: -10px;
     }
- @media (max-width: 768px) {
+@media (max-width: 768px) {
   .left-panel {
     display: none;
   }
@@ -306,16 +306,20 @@
   .messages {
     flex: 1;
     overflow-y: auto;
-    padding-bottom: 80px; /* reserve space for input */
+    padding-bottom: 90px; /* enough space for fixed input */
   }
 
   .input-area {
-    margin-top: auto;
-    padding: 10px 0 20px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 16px;
     background-color: white;
     display: flex;
     gap: 10px;
-    position: relative;
+    z-index: 999;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
   }
 
   .input-area input[type="text"] {
@@ -339,11 +343,16 @@
     flex-shrink: 0;
   }
 
+  .pre-buttons-container,
+  .pre-buttons {
+    display: none !important;
+  }
+
   .preload {
     position: absolute;
-    top: 30%;
+    top: 28%;
     left: 50%;
-    transform: translate(-50%, -30%);
+    transform: translate(-50%, -28%);
     text-align: center;
     z-index: 1;
   }
