@@ -282,7 +282,7 @@
       margin-bottom: -10px;
     }
 @media (max-width: 768px) {
-  /* Hide sidebar initially on mobile */
+  /* Sidebar hidden by default */
   .left-panel {
     position: fixed;
     top: 0;
@@ -302,13 +302,13 @@
     left: 0;
   }
 
-  /* Expand right area to full width */
+  /* Full-width chat area */
   .right-area {
     width: 100%;
     padding: 10px;
   }
 
-  /* Hide pre-buttons and show only Lottie */
+  /* Hide pre-buttons, keep only animation */
   .pre-buttons-container,
   .pre-buttons {
     display: none !important;
@@ -319,7 +319,7 @@
     transform: translate(-50%, -50%);
   }
 
-  /* Mobile sidebar toggle button */
+  /* Floating toggle menu button */
   .mobile-sidebar-toggle {
     position: fixed;
     top: 20px;
@@ -337,30 +337,47 @@
     cursor: pointer;
   }
 
-  /* Fix send button alignment */
+  /* Input and send button row */
   .input-area {
     display: flex;
     align-items: center;
-    gap: 10px;
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding: 0 5px;
+    box-sizing: border-box;
     margin-top: 10px;
   }
 
   .input-area input[type="text"] {
-    padding: 10px;
+    width: 100%;
+    min-width: 0;
+    padding: 12px 14px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
     font-size: 14px;
     flex: 1;
-    min-width: 0;
+    box-sizing: border-box;
   }
 
   .send-btn {
     width: 44px;
     height: 44px;
+    min-width: 44px;
+    min-height: 44px;
     border-radius: 50%;
     font-size: 18px;
     padding: 0;
     flex-shrink: 0;
+    margin-right: 4px;
+    align-self: center;
+  }
+
+  /* Ensure chat box doesn't overflow on smaller screens */
+  .chat-box {
+    padding: 15px;
   }
 }
+
 
   </style>
 </head>
