@@ -254,30 +254,87 @@
       font-family: monospace;
       white-space: pre-wrap;
     }
+@media (max-width: 768px) {
+  /* Hide sidebar initially on mobile */
+  .left-panel {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 80%;
+    height: 100%;
+    background-color: #FFF5EC;
+    z-index: 999;
+    transition: left 0.3s ease;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+  }
 
-    @media (max-width: 768px) {
-      .left-panel {
-        display: none;
-      }
-      .right-area {
-        width: 100%;
-        padding: 10px;
-      }
-      .chat-box {
-        padding: 15px;
-      }
-      .pre-buttons button {
-        padding: 10px 20px;
-        font-size: 14px;
-        min-width: 130px;
-      }
-      .profile-section {
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
-      }
-    }
+  /* Show sidebar when toggled via JS */
+  .left-panel.show {
+    left: 0;
+  }
+
+  /* Expand right area to full width */
+  .right-area {
+    width: 100%;
+    padding: 10px;
+  }
+
+  /* Hide pre-buttons and show only Lottie */
+  .pre-buttons-container,
+  .pre-buttons {
+    display: none !important;
+  }
+
+  .preload {
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Mobile sidebar toggle button */
+  .mobile-sidebar-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background-color: #00bcd4;
+    color: white;
+    border: none;
+    font-size: 24px;
+    font-weight: bold;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+  }
+
+  /* Fix send button alignment */
+  .input-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .input-area input[type="text"] {
+    padding: 10px;
+    font-size: 14px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .send-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 18px;
+    padding: 0;
+    flex-shrink: 0;
+  }
+}
+
   </style>
 </head>
 
@@ -582,6 +639,49 @@
         if (preload) preload.style.display = "block";
         currentChatId = null;
       }
+
+      document.addEventListener("DOMContentLoaded", () => {
+    // Create toggle button
+    const toggleBtn = document.createElement("button");
+    toggleBtn.className = "mobile-sidebar-toggle";
+    toggleBtn.innerHTML = "☰";
+    document.body.appendChild(toggleBtn);
+
+    const leftPanel = document.querySelector(".left-panel");
+
+    // Toggle sidebar on click
+    toggleBtn.addEventListener("click", () => {
+      leftPanel.classList.toggle("show");
+    });
+
+    // Apply responsive input fix only for mobile screens
+    const inputFix = () => {
+      if (window.innerWidth <= 768) {
+        const input = document.querySelector("#userInput");
+        const sendBtn = document.querySelector(".send-btn");
+
+        // Fix input width so it aligns well with circular button
+        input.style.padding = "10px";
+        input.style.fontSize = "14px";
+        input.style.flex = "1";
+        input.style.minWidth = "0";
+
+        // Fix send button size
+        sendBtn.style.width = "44px";
+        sendBtn.style.height = "44px";
+        sendBtn.style.borderRadius = "50%";
+        sendBtn.style.fontSize = "18px";
+        sendBtn.style.padding = "0";
+      }
+    };
+
+    // Apply on load
+    inputFix();
+
+    // Re-apply on resize
+    window.addEventListener("resize", inputFix);
+  });
+
     </script>
     
 </body>
