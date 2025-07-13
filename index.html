@@ -281,103 +281,78 @@
       margin-top: -80px;
       margin-bottom: -10px;
     }
-     @media (max-width: 768px) {
-  /* Sidebar hidden by default */
+ @media (max-width: 768px) {
   .left-panel {
-    position: fixed;
-    top: 0;
-    left: -100%;
-    width: 80%;
-    height: 100%;
-    background-color: #FFF5EC;
-    z-index: 999;
-    transition: left 0.3s ease;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+    display: none;
+  }
+
+  .right-area {
+    width: 100%;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
     display: flex;
     flex-direction: column;
   }
 
-  /* Show sidebar when toggled via JS */
-  .left-panel.show {
-    left: 0;
+  .chat-box {
+    flex: 1;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
-  /* Full-width chat area */
-  .right-area {
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 80px; /* space for fixed input */
+  }
+
+  .input-area {
+    position: fixed;
+    bottom: 0;
+    left: 0;
     width: 100%;
     padding: 10px;
-  }
-
-  /* Hide pre-buttons, keep only animation */
-  .pre-buttons-container,
-  .pre-buttons {
-    display: none !important;
-  }
-
-  .preload {
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  /* Floating toggle menu button */
-  .mobile-sidebar-toggle {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    background-color: #00bcd4;
-    color: white;
-    border: none;
-    font-size: 24px;
-    font-weight: bold;
-    z-index: 1000;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    cursor: pointer;
-  }
-
-  /* Input and send button row */
-  .input-area {
+    background-color: white;
     display: flex;
-    align-items: center;
-    flex-wrap: nowrap;
-    gap: 8px;
-    padding: 0 5px;
-    box-sizing: border-box;
-    margin-top: 10px;
+    gap: 10px;
+    z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
   }
 
   .input-area input[type="text"] {
-    width: 100%;
-    min-width: 0;
-    padding: 12px 14px;
-    border-radius: 20px;
-    border: 1px solid #ccc;
-    font-size: 14px;
     flex: 1;
-    box-sizing: border-box;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
   }
 
   .send-btn {
     width: 44px;
     height: 44px;
-    min-width: 44px;
-    min-height: 44px;
     border-radius: 50%;
+    background-color: #00bcd4;
+    color: white;
     font-size: 18px;
-    padding: 0;
-    flex-shrink: 0;
-    margin-right: 4px;
-    align-self: center;
+    border: none;
+    cursor: pointer;
   }
 
-  /* Ensure chat box doesn't overflow on smaller screens */
-  .chat-box {
-    padding: 15px;
+  .pre-buttons button {
+    padding: 10px 20px;
+    font-size: 14px;
+    min-width: 130px;
+  }
+
+  .preload {
+    top: 45%;
+    transform: translate(-50%, -50%);
   }
 }
-
 
   </style>
 </head>
