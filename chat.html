@@ -13,6 +13,7 @@
 
 <style>
   * { box-sizing: border-box; }
+
   body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
@@ -22,6 +23,7 @@
     overflow: hidden;
   }
 
+  /* ----------  LEFT PANEL  ---------- */
   .left-panel {
     width: 20%;
     background-color: #FFF5EC;
@@ -84,7 +86,6 @@
     font-size: 14px;
     transition: transform 0.2s ease;
   }
-
   .history div:hover { transform: scale(1.02); }
 
   .profile-section {
@@ -111,6 +112,7 @@
     cursor: pointer;
   }
 
+  /* ----------  RIGHT AREA  ---------- */
   .right-area {
     width: 80%;
     padding: 25px;
@@ -121,7 +123,9 @@
 
   .chat-box {
     width: 100%;
-    height: 100%;
+    /* removed fixed height and switched to flex grow */
+    flex: 1;
+    min-height: 100%;
     background: white;
     border-radius: 20px;
     display: flex;
@@ -188,11 +192,9 @@
     cursor: pointer;
     font-size: 18px;
   }
+  button.send-btn:hover { background-color: #0097a7; }
 
-  button.send-btn:hover {
-    background-color: #0097a7;
-  }
-
+  /* ----------  PRELOAD + QUICK BUTTONS  ---------- */
   .preload {
     position: absolute;
     top: 35%;
@@ -208,10 +210,7 @@
     justify-content: center;
   }
 
-  .pre-buttons-container {
-    display: flex;
-    justify-content: center;
-  }
+  .pre-buttons-container { display: flex; justify-content: center; }
 
   .pre-buttons {
     display: flex;
@@ -235,12 +234,9 @@
     transition: all 0.2s ease-in-out;
     min-width: 160px;
   }
+  .pre-buttons button:hover { background: #f8f8f8; transform: scale(1.1); }
 
-  .pre-buttons button:hover {
-    background: #f8f8f8;
-    transform: scale(1.1);
-  }
-
+  /* ----------  MISC  ---------- */
   .speak-btn {
     margin-top: 6px;
     font-size: 18px;
@@ -259,30 +255,48 @@
     white-space: pre-wrap;
   }
 
-    @media (max-width: 768px) {
-      .left-panel {
-        display: none;
-      }
-      .right-area {
-        width: 100%;
-        padding: 10px;
-      }
-      .chat-box {
-        padding: 15px;
-      }
-      .pre-buttons button {
-        padding: 10px 20px;
-        font-size: 14px;
-        min-width: 130px;
-      }
-      .profile-section {
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
-      }
-        }
-  </style>
+  /* ----------  MOBILE  ---------- */
+  @media (max-width: 768px) {
+    .left-panel { display: none; }
+
+    .right-area {
+      width: 100%;
+      padding: 10px;
+    }
+
+    .chat-box { padding: 15px; }
+
+    /* keep buttons compact */
+    .pre-buttons button {
+      padding: 10px 20px;
+      font-size: 14px;
+      min-width: 130px;
+    }
+
+    .profile-section {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* --- NEW: keep input visible on mobile --- */
+    .input-area {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      padding: 10px;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+      z-index: 10;
+    }
+
+    /* leave space so last messages aren't hidden behind fixed input */
+    .messages { margin-bottom: 70px; }
+  }
+</style>
+
 </head>
 
 <body>
