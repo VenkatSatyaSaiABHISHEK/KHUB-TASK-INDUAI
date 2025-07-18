@@ -11,351 +11,277 @@
   <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #FFF5EC;
-      height: 100vh;
-      display: flex;
-      overflow: hidden;
-    }
-
-    .left-panel {
-      width: 20%;
-      background-color: #FFF5EC;
-      padding: 25px 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      color: #333;
-    }
-
-    .logo-section {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 30px;
-    }
-
-    .logo-circle {
-      width: 50px;
-      height: 50px;
-      background-color: #00bcd4;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: bold;
-      font-size: 18px;
-    }
-
-    .logo-text {
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    .new-chat-input {
-      width: 100%;
-      padding: 10px;
-      border-radius: 20px;
-      border: 1px solid #ccc;
-      outline: none;
-      margin-bottom: 20px;
-      cursor: pointer;
-    }
-
-    .history {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .history div {
-      padding: 10px 14px;
-      background-color: white;
-      border-radius: 16px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      cursor: pointer;
-      font-size: 14px;
-      transition: transform 0.2s ease;
-    }
-
-    .history div:hover { transform: scale(1.02); }
-
-    .profile-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .profile-section img {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      border: 2px solid #00bcd4;
-    }
-
-    .signout-btn {
-      background-color: #00bcd4;
-      color: white;
-      border: none;
-      padding: 6px 14px;
-      border-radius: 20px;
-      cursor: pointer;
-    }
-
-    .right-area {
-      width: 80%;
-      padding: 25px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .chat-box {
-      width: 100%;
-      height: 100%;
-      background: white;
-      border-radius: 20px;
-      display: flex;
-      flex-direction: column;
-      padding: 25px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-      position: relative;
-    }
-
-    .messages {
-      flex: 1;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding-right: 5px;
-    }
-
-    .message {
-      max-width: 75%;
-      padding: 12px 16px;
-      border-radius: 18px;
-      font-size: 14px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      display: inline-block;
-      word-break: break-word;
-      line-height: 1.4;
-    }
-
-    .user {
-      align-self: flex-end;
-      background-color: rgba(0, 188, 212, 0.9);
-      color: white;
-      border-top-right-radius: 0;
-    }
-
-    .bot {
-      align-self: flex-start;
-      background-color: rgba(255, 245, 236, 0.95);
-      color: #333;
-      border-top-left-radius: 0;
-    }
-
-    .input-area {
-      display: flex;
-      gap: 10px;
-    }
-
-    input[type="text"] {
-      flex: 1;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 20px;
-      outline: none;
-    }
-
-    button.send-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background-color: #00bcd4;
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-size: 18px;
-    }
-
-    button.send-btn:hover {
-      background-color: #0097a7;
-    }
-
-    .preload {
-      position: absolute;
-      top: 35%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      z-index: 1;
-    }
-
-    .pre-animation {
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: center;
-    }
-
-    .pre-buttons-container {
-      display: flex;
-      justify-content: center;
-    }
-
-    .pre-buttons {
-      display: flex;
-      flex-direction: row;
-      gap: 25px;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .pre-buttons button {
-      padding: 14px 28px;
-      background: linear-gradient(to right, #ffffff, #fdf7f3);
-      border: 1px solid #ddd;
-      border-radius: 50px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: 600;
-      color: #444;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-      transition: all 0.2s ease-in-out;
-      min-width: 160px;
-    }
-
-    .pre-buttons button:hover {
-      background: #f8f8f8;
-      transform: scale(1.1);
-    }
-
-    .speak-btn {
-      margin-top: 6px;
-      font-size: 18px;
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-
-    pre {
-      background: #f4f4f4;
-      padding: 12px;
-      border-radius: 8px;
-      overflow-x: auto;
-      margin: 10px 0;
-      font-family: monospace;
-      white-space: pre-wrap;
-    }
-@media (max-width: 768px) {
-  .left-panel {
-    display: none;
-  }
-
-  .right-area {
-    width: 100%;
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #FFF5EC;
     height: 100vh;
-    padding: 10px;
     display: flex;
-    flex-direction: column;
+    overflow: hidden;
   }
 
-  .chat-box {
-    flex: 1;
-    padding: 10px;
+  .left-panel {
+    width: 20%;
+    background-color: #FFF5EC;
+    padding: 25px 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    color: #333;
+  }
+
+  .logo-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+
+  .logo-circle {
+    width: 50px;
+    height: 50px;
+    background-color: #00bcd4;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+  .logo-text {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .new-chat-input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    outline: none;
+    margin-bottom: 20px;
+    cursor: pointer;
+  }
+
+  .history {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    flex-grow: 1;
+  }
+
+  .history div {
+    padding: 10px 14px;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    cursor: pointer;
+    font-size: 14px;
+    transition: transform 0.2s ease;
+  }
+
+  .history div:hover { transform: scale(1.02); }
+
+  .profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding-top: 20px;
+  }
+
+  .profile-section img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid #00bcd4;
+  }
+
+  .signout-btn {
+    background-color: #00bcd4;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+
+  .right-area {
+    width: 80%;
+    padding: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .chat-box {
+    width: 100%;
+    height: 100%;
+    background: white;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     position: relative;
   }
 
   .messages {
     flex: 1;
     overflow-y: auto;
-    padding-bottom: 90px; /* enough space for fixed input */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-right: 5px;
+  }
+
+  .message {
+    max-width: 75%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    word-break: break-word;
+    line-height: 1.4;
+  }
+
+  .user {
+    align-self: flex-end;
+    background-color: rgba(0, 188, 212, 0.9);
+    color: white;
+    border-top-right-radius: 0;
+  }
+
+  .bot {
+    align-self: flex-start;
+    background-color: rgba(255, 245, 236, 0.95);
+    color: #333;
+    border-top-left-radius: 0;
   }
 
   .input-area {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 12px 16px;
-    background-color: white;
     display: flex;
     gap: 10px;
-    z-index: 999;
-    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
   }
 
-  .input-area input[type="text"] {
+  input[type="text"] {
     flex: 1;
     padding: 12px;
-    font-size: 15px;
     border: 1px solid #ccc;
     border-radius: 20px;
     outline: none;
   }
 
-  .send-btn {
+  button.send-btn {
     width: 44px;
     height: 44px;
     border-radius: 50%;
     background-color: #00bcd4;
     color: white;
-    font-size: 18px;
     border: none;
     cursor: pointer;
-    flex-shrink: 0;
+    font-size: 18px;
   }
 
-  .pre-buttons-container,
-  .pre-buttons {
-    display: none !important;
+  button.send-btn:hover {
+    background-color: #0097a7;
   }
 
   .preload {
     position: absolute;
-    top: 28%;
+    top: 35%;
     left: 50%;
-    transform: translate(-50%, -28%);
+    transform: translate(-50%, -50%);
     text-align: center;
     z-index: 1;
   }
 
-  .pre-buttons button {
-    padding: 10px 20px;
-    font-size: 14px;
-    min-width: 130px;
+  .pre-animation {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
   }
 
-  .mobile-sidebar-toggle {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    background-color: #00bcd4;
-    color: white;
+  .pre-buttons-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .pre-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .pre-buttons button {
+    padding: 14px 28px;
+    background: linear-gradient(to right, #ffffff, #fdf7f3);
+    border: 1px solid #ddd;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    color: #444;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    transition: all 0.2s ease-in-out;
+    min-width: 160px;
+  }
+
+  .pre-buttons button:hover {
+    background: #f8f8f8;
+    transform: scale(1.1);
+  }
+
+  .speak-btn {
+    margin-top: 6px;
+    font-size: 18px;
+    background: none;
     border: none;
-    font-size: 24px;
-    font-weight: bold;
-    z-index: 1000;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     cursor: pointer;
   }
-}
 
+  pre {
+    background: #f4f4f4;
+    padding: 12px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 10px 0;
+    font-family: monospace;
+    white-space: pre-wrap;
+  }
+
+  @media (max-width: 768px) {
+    .left-panel {
+      display: none;
+    }
+    .right-area {
+      width: 100%;
+      padding: 10px;
+    }
+    .chat-box {
+      padding: 15px;
+    }
+    .pre-buttons button {
+      padding: 10px 20px;
+      font-size: 14px;
+      min-width: 130px;
+    }
+    .profile-section {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
   </style>
 </head>
 
@@ -402,7 +328,7 @@
         </div>
       </div>
     </div>
-    <script>
+  <script>
       const firebaseConfig = {
         apiKey: "AIzaSyBdrRvxt8P10sT0ZteaziN5TCT-FuiNnKE",
         authDomain: "khub-bdabd.firebaseapp.com",
@@ -419,6 +345,16 @@
     
       let currentUser = null;
       let currentChatId = null;
+      let currentUtterance = null;
+    
+      auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch((error) => {
+        console.error("❌ Auth persistence error:", error);
+      });
+    
+      window.onload = () => {
+        currentChatId = null;
+        speechSynthesis.cancel(); // Stop speaking on reload
+      };
     
       auth.onAuthStateChanged((user) => {
         if (user) {
@@ -454,6 +390,7 @@
             querySnapshot.forEach((doc) => {
               const chat = doc.data();
               const item = document.createElement("div");
+              item.className = "history-item";
     
               let displayTime = "No Date";
               if (chat.timestamp && typeof chat.timestamp.toDate === "function") {
@@ -473,11 +410,16 @@
               item.appendChild(del);
     
               item.onclick = () => {
-                // ✅ Fix: don’t reset with preload, just clear old messages
                 document.getElementById("messages").innerHTML = "";
                 hidePreload();
-                createMessage(chat.userInput, "user");
-                createMessage(chat.botReply, "bot");
+                speechSynthesis.cancel(); // Stop speaking on new selection
+                currentChatId = doc.id;
+    
+                if (chat.messages && Array.isArray(chat.messages)) {
+                  chat.messages.forEach((msg) => {
+                    createMessage(msg.content, msg.role === "user" ? "user" : "bot");
+                  });
+                }
               };
     
               historyDiv.appendChild(item);
@@ -504,12 +446,23 @@
         }
       });
     
-      function speakText(text) {
-        const utter = new SpeechSynthesisUtterance(text);
-        utter.lang = "en-US";
-        utter.pitch = 1.2;
-        utter.rate = 1;
-        speechSynthesis.speak(utter);
+      function stripEmojis(text) {
+        return text.replace(/[😀-🙏|🌀-🗿|🚀-🛿|🜀-🝿|🞀-🟿|🠀-🣿|🤀-🧿|🨀-🩯|🩰-🫿|☀-⛿|✀-➿|⭐-⭕]/gu, "");
+      }
+    
+      function toggleSpeak(btn, text) {
+        if (speechSynthesis.speaking && !speechSynthesis.paused) {
+          speechSynthesis.cancel();
+          btn.innerHTML = "🔈";
+        } else {
+          const cleanText = stripEmojis(text);
+          currentUtterance = new SpeechSynthesisUtterance(cleanText);
+          currentUtterance.lang = "en-US";
+          currentUtterance.pitch = 1.2;
+          currentUtterance.rate = 1;
+          speechSynthesis.speak(currentUtterance);
+          btn.innerHTML = "🔊";
+        }
       }
     
       function createMessage(text, sender) {
@@ -519,10 +472,10 @@
         if (sender === "bot") {
           const speakBtn = document.createElement("button");
           speakBtn.className = "speak-btn";
-          speakBtn.innerHTML = "🔊";
-          speakBtn.onclick = () => speakText(text);
+          speakBtn.innerHTML = "🔈";
+          speakBtn.onclick = () => toggleSpeak(speakBtn, text);
     
-          if (text.includes("```")) {
+          if (text.includes("```") ) {
             const parts = text.split("```");
             parts.forEach((part, i) => {
               if (i % 2 === 0) {
@@ -536,16 +489,7 @@
     
                 const copyBtn = document.createElement("button");
                 copyBtn.textContent = "📋 Copy";
-                copyBtn.style.cssText = `
-                  margin-top: 5px;
-                  padding: 4px 10px;
-                  background: #00bcd4;
-                  color: white;
-                  border: none;
-                  border-radius: 6px;
-                  cursor: pointer;
-                  font-size: 12px;
-                `;
+                copyBtn.style.cssText = `margin-top: 5px; padding: 4px 10px; background: #00bcd4; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px;`;
                 copyBtn.onclick = () => {
                   navigator.clipboard.writeText(part.trim());
                   copyBtn.textContent = "✅ Copied!";
@@ -616,24 +560,37 @@
             body: JSON.stringify(body)
           });
     
+          if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
+    
           const data = await res.json();
           const reply = data?.choices?.[0]?.message?.content;
     
           if (reply) {
             createMessage(reply, "bot");
     
-            const title = text.length > 25 ? text.substring(0, 25) + "..." : text;
-            const chatData = {
-              uid: currentUser.uid,
-              title: title,
-              userInput: text,
-              botReply: reply,
-              timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            };
+            if (!currentChatId) {
+              const title = text.length > 25 ? text.substring(0, 25) + "..." : text;
+              const newChat = {
+                uid: currentUser.uid,
+                title: title,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                messages: [
+                  { role: "user", content: text },
+                  { role: "bot", content: reply }
+                ]
+              };
     
-            db.collection("chats").add(chatData).then(() => {
+              const docRef = await db.collection("chats").add(newChat);
+              currentChatId = docRef.id;
               loadChatHistory(currentUser.uid);
-            });
+            } else {
+              await db.collection("chats").doc(currentChatId).update({
+                messages: firebase.firestore.FieldValue.arrayUnion(
+                  { role: "user", content: text },
+                  { role: "bot", content: reply }
+                )
+              });
+            }
           } else {
             createMessage("⚠️ No reply from AI. Please try again.", "bot");
           }
@@ -659,51 +616,11 @@
         const preload = document.getElementById("preload");
         if (preload) preload.style.display = "block";
         currentChatId = null;
+        speechSynthesis.cancel(); // Stop speaking on reset
       }
-
-      document.addEventListener("DOMContentLoaded", () => {
-    // Create toggle button
-    const toggleBtn = document.createElement("button");
-    toggleBtn.className = "mobile-sidebar-toggle";
-    toggleBtn.innerHTML = "☰";
-    document.body.appendChild(toggleBtn);
-
-    const leftPanel = document.querySelector(".left-panel");
-
-    // Toggle sidebar on click
-    toggleBtn.addEventListener("click", () => {
-      leftPanel.classList.toggle("show");
-    });
-
-    // Apply responsive input fix only for mobile screens
-    const inputFix = () => {
-      if (window.innerWidth <= 768) {
-        const input = document.querySelector("#userInput");
-        const sendBtn = document.querySelector(".send-btn");
-
-        // Fix input width so it aligns well with circular button
-        input.style.padding = "10px";
-        input.style.fontSize = "14px";
-        input.style.flex = "1";
-        input.style.minWidth = "0";
-
-        // Fix send button size
-        sendBtn.style.width = "44px";
-        sendBtn.style.height = "44px";
-        sendBtn.style.borderRadius = "50%";
-        sendBtn.style.fontSize = "18px";
-        sendBtn.style.padding = "0";
-      }
-    };
-
-    // Apply on load
-    inputFix();
-
-    // Re-apply on resize
-    window.addEventListener("resize", inputFix);
-  });
-
     </script>
+    
+    
     
 </body>
 </html>    
